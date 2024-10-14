@@ -26,7 +26,8 @@ Le projet est configuré pour se lancer automatiquement au démarrage de la Rasp
    `cd music_server`
 
 3. Installez les dépendances via un environnement virtuel :
-   `make install`
+   `sudo make install`
+   Appuyez sur `Y` pour valider l'installation quand demandé.
 
 4. Lancez le serveur :
    `make run`
@@ -49,7 +50,7 @@ Pour redémarrer le serveur en cours d'exécution :
 
 Pour désinstaller l'environnement virtuel et nettoyer les fichiers temporaires générés par le projet (comme __pycache__, .pytest_cache, etc.), utilisez la commande suivante :
 
-`make uninstall`
+`sudo make uninstall`
 
 ## Points d'accès
 
@@ -93,7 +94,8 @@ The project is configured to automatically start on Raspberry Pi boot. During in
    `cd music_server`
 
 3. Install dependencies using a virtual environment:
-   `make install`
+   `sudo make install`
+   Press `Y` to proceed with the installation when prompted.
 
 4. Start the server:
    `make run`
@@ -116,7 +118,7 @@ To restart the currently running server:
 
 To uninstall the virtual environment and clean temporary files (such as __pycache__, .pytest_cache, etc.), use the following command:
 
-`make uninstall`
+`sudo make uninstall`
 
 ## Points d'accès
 

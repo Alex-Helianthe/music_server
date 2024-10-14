@@ -3,7 +3,7 @@
 # Variables
 VENV_DIR = venv
 PYTHON = python3
-PIP = $(VENV_DIR)/bin/pip
+PIP = $(VENV_DIR)/bin/pip3
 UVICORN = $(VENV_DIR)/bin/uvicorn
 SERVICE_NAME = music_server.service
 
@@ -16,6 +16,7 @@ $(VENV_DIR)/bin/activate:
 
 # Install dependencies in the virtual environment
 install: $(VENV_DIR)/bin/activate
+	apt-get install python3-dev
 	$(PIP) install -r requirements.txt
 	@echo "Installation completed."
 	make setup-service
