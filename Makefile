@@ -23,7 +23,7 @@ install: $(VENV_DIR)/bin/activate
 
 # Start the server with Uvicorn
 run:
-	$(UVICORN) app.main:app --reload
+	$(UVICORN) main:app --reload --host 0.0.0.0
 
 # Restart the server
 reboot:
