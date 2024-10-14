@@ -16,6 +16,7 @@ class ServoVolumeController(VolumeController):
 
         self.pwm.start(self._angle_to_percent(0))
 
+    @staticmethod
     def _angle_to_percent(angle):
         if angle > 180 or angle < 0 :
             return False
