@@ -5,6 +5,7 @@ VENV_DIR = venv
 PYTHON = python3
 PIP = $(VENV_DIR)/bin/pip3
 UVICORN = $(VENV_DIR)/bin/uvicorn
+UVICORN_CMD = $(UVICORN) main:app --reload --host 0.0.0.0
 SERVICE_NAME = music_server.service
 
 # Default target
@@ -23,7 +24,7 @@ install: $(VENV_DIR)/bin/activate
 
 # Start the server with Uvicorn
 run:
-	$(UVICORN) main:app --reload --host 0.0.0.0
+	$(UVICORN_CMD)
 
 # Restart the server
 reboot:
@@ -54,7 +55,7 @@ setup-service:
 	sudo bash -c 'echo "Description=Music Server FastAPI Service" >> /etc/systemd/system/$(SERVICE_NAME)'
 	sudo bash -c 'echo "[Service]" >> /etc/systemd/system/$(SERVICE_NAME)'
 	sudo bash -c 'echo "WorkingDirectory=$$(pwd)" >> /etc/systemd/system/$(SERVICE_NAME)'
-	sudo bash -c 'echo "ExecStart=$$(pwd)/$(VENV_DIR)/bin/make run" >> /etc/systemd/system/$(SERVICE_NAME)'
+	sudo bash -c 'echo "ExecStart=$$(pwd)/$(UVICORN_CMD)" >> /etc/systemd/system/$(SERVICE_NAME)'
 	sudo bash -c 'echo "Restart=always" >> /etc/systemd/system/$(SERVICE_NAME)'
 	sudo bash -c 'echo "User=$$(whoami)" >> /etc/systemd/system/$(SERVICE_NAME)'
 	sudo bash -c 'echo "[Install]" >> /etc/systemd/system/$(SERVICE_NAME)'
