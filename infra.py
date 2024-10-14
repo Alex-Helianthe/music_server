@@ -2,10 +2,11 @@ import io
 
 from typing import Optional
 
+from libs.commons.singleton import SingletonMetaClass
 from libs.controllers.volume import VolumeController, VolumeControllerFactory, VolumeControllerType
 
 
-class _APIInfra:
+class _APIInfra(metaclass=SingletonMetaClass):
 
     def __init__(self):
         self._volume_controller: Optional[VolumeController] = None
