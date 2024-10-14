@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volume Salon</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .slider-container {
+      margin-top: 20px;
+    }
+
+    /* Style par défaut pour le slider horizontal */
+    .slider {
+      width: 100%;
+      margin: 20px 0;
+      height: 12px; /* Augmenter la hauteur pour une meilleure accessibilité */
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: #333;
+    }
+
+    /* Customiser l'apparence du curseur (thumb) */
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #ff0000;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #ff0000;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    /* Wrapper pour le slider vertical */
+    .vertical-slider-wrapper {
+      position: relative;
+      height: 300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slider.vertical {
+      position: absolute;
+      transform: rotate(-90deg) translateX(-50%);
+      transform-origin: 50% 50%;
+      width: 300px; /* La hauteur devient la largeur après rotation */
+      height: 12px; /* Garder une bonne épaisseur en mode vertical aussi */
+    }
+
+    /* Styles pour la version mobile ou en mode portrait */
+    @media screen and (max-width: 768px), (orientation: portrait) {
+      .container {
+        max-width: 100%;
+        margin: 20px;
+      }
+
+      .slider-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Wrapper adapté au mode portrait */
+      .vertical-slider-wrapper {
+        height: 300px;
+        width: 50px;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Volume Salon <br/> <span id="slider-value">50</span></h1>
+    <div class="slider-container">
+      <!-- Wrapper pour rendre le slider vertical en mode mobile -->
+      <div class="vertical-slider-wrapper">
+        <input
+          type="range"
+          id="slider"
+          min="0"
+          max="100"
+          value="50"
+          step="5"
+          class="slider"
+          style="top:0px"
+        />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sélectionner les éléments HTML
+    const slider = document.getElementById('slider');
+    const sliderValue = document.getElementById('slider-value');
+    const backendResponse = document.getElementById('backend-response');
+
+    // Fonction appelée lorsque la valeur du slider change
+    slider.addEventListener('input', async function () {
+      const value = slider.value;
+      sliderValue.textContent = value;
+
+      try {
+        // Faire une requête Axios vers le backend
+        const response = await axios.post('/sound', {
+          level: parseInt(value)
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        backendResponse.textContent = "Niveau de son modifié avec succès !";
+      } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        backendResponse.textContent = 'Erreur lors de la requête';
+      }
+    });
+
+    // Adapter automatiquement l'orientation du slider en fonction de la taille de l'écran
+    function handleResize() {
+      if (window.innerWidth <= 768 || window.innerHeight > window.innerWidth) {
+        slider.classList.add('vertical');
+      } else {
+        slider.classList.remove('vertical');
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Appel initial lors du chargement de la page
+  </script>
+
+</body>
+</html>
