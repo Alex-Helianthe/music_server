@@ -128,8 +128,8 @@
 
       try {
         // Faire une requête Axios vers le backend
-        const response = await axios.post('/sound', {
-          level: parseInt(value)
+        const response = await axios.post('/volume', {
+          volume: parseInt(value)
         }, {
           headers: {
             'Content-Type': 'application/json'
