@@ -17,12 +17,12 @@ app.add_middleware(
 
 
 class SoundBody(BaseModel):
-    level: int
+    volume: int
 
 
-@app.post("/sound")
+@app.post("/volume")
 def set_sound_level(body: SoundBody):
-    APIInfra.volume_controller.set_volume(body.level)
+    APIInfra.volume_controller.set_volume(body.volume)
 
 
 @app.get("/")
