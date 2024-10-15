@@ -24,17 +24,15 @@
       margin-top: 20px;
     }
 
-    /* Style par défaut pour le slider horizontal */
     .slider {
       width: 100%;
       margin: 20px 0;
-      height: 12px; /* Augmenter la hauteur pour une meilleure accessibilité */
+      height: 12px;
       -webkit-appearance: none;
       appearance: none;
       background-color: #333;
     }
 
-    /* Customiser l'apparence du curseur (thumb) */
     .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -53,7 +51,6 @@
       border-radius: 50%;
     }
 
-    /* Wrapper pour le slider vertical */
     .vertical-slider-wrapper {
       position: relative;
       height: 300px;
@@ -67,11 +64,10 @@
       position: absolute;
       transform: rotate(-90deg) translateX(-50%);
       transform-origin: 50% 50%;
-      width: 300px; /* La hauteur devient la largeur après rotation */
-      height: 12px; /* Garder une bonne épaisseur en mode vertical aussi */
+      width: 300px;
+      height: 12px;
     }
 
-    /* Styles pour la version mobile ou en mode portrait */
     @media screen and (max-width: 768px), (orientation: portrait) {
       .container {
         max-width: 100%;
@@ -85,7 +81,6 @@
         justify-content: center;
       }
 
-      /* Wrapper adapté au mode portrait */
       .vertical-slider-wrapper {
         height: 300px;
         width: 50px;
@@ -99,7 +94,6 @@
   <div class="container">
     <h1>Volume Salon <br/> <span id="slider-value">50</span></h1>
     <div class="slider-container">
-      <!-- Wrapper pour rendre le slider vertical en mode mobile -->
       <div class="vertical-slider-wrapper">
         <input
           type="range"
@@ -119,15 +113,11 @@
     // Sélectionner les éléments HTML
     const slider = document.getElementById('slider');
     const sliderValue = document.getElementById('slider-value');
-    const backendResponse = document.getElementById('backend-response');
+    let debounceTimer;
 
-    // Fonction appelée lorsque la valeur du slider change
-    slider.addEventListener('input', async function () {
-      const value = slider.value;
-      sliderValue.textContent = value;
-
+    // Fonction pour envoyer la requête vers le backend
+    async function sendRequest(value) {
       try {
-        // Faire une requête Axios vers le backend
         const response = await axios.post('/volume', {
           volume: parseInt(value)
         }, {
@@ -135,14 +125,29 @@
             'Content-Type': 'application/json'
           }
         });
-        backendResponse.textContent = "Niveau de son modifié avec succès !";
+        console.log("Niveau de son modifié avec succès !");
       } catch (error) {
         console.error('Erreur lors de la requête :', error);
-        backendResponse.textContent = 'Erreur lors de la requête';
       }
+    }
+
+    // Fonction de gestion du changement de valeur du slider avec debouncing
+    slider.addEventListener('input', function () {
+      const value = slider.value;
+      sliderValue.textContent = value;
+
+      // Si un timer est déjà en cours, le réinitialiser
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+
+      // Déclencher la requête après 500ms sans autre changement
+      debounceTimer = setTimeout(() => {
+        sendRequest(value);
+      }, 500); // 500ms de délai avant l'envoi de la requête
     });
 
-    // Adapter automatiquement l'orientation du slider en fonction de la taille de l'écran
+    // Adapter l'orientation du slider en fonction de la taille de l'écran
     function handleResize() {
       if (window.innerWidth <= 768 || window.innerHeight > window.innerWidth) {
         slider.classList.add('vertical');
@@ -152,7 +157,7 @@
     }
 
     window.addEventListener('resize', handleResize);
-    handleResize(); // Appel initial lors du chargement de la page
+    handleResize();
   </script>
 
 </body>
