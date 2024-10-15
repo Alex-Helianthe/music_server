@@ -1,5 +1,3 @@
-import time
-
 import RPi.GPIO as GPIO
 
 from libs.controllers.volume import VolumeController

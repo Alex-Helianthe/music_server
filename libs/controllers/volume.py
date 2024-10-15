@@ -21,9 +21,9 @@ class VolumeController:
 class VolumeControllerFactory:
     def create(type: VolumeControllerType):
         if type == VolumeControllerType.MOCK:
-            from ._mock import MockVolumeController
-            return MockVolumeController()
-        if type == VolumeControllerType.SERVO:
+            # from ._mock import MockVolumeController
+            # return MockVolumeController()
+        # if type == VolumeControllerType.SERVO:
             from ._servo import ServoVolumeController
             return ServoVolumeController()
         raise Exception("invalid connector type")
