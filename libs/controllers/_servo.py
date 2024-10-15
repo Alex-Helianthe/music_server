@@ -1,3 +1,5 @@
+import time
+
 import RPi.GPIO as GPIO
 
 from libs.controllers.volume import VolumeController
@@ -36,5 +38,7 @@ class ServoVolumeController(VolumeController):
     def set_volume(self, volume: int):
         converted_angle = self._angle_to_percent(volume)
         self.pwm.ChangeDutyCycle(converted_angle)
+        time.sleep(0.2)
+        self.pwm.ChangeDutyCycle(0)
 
 
